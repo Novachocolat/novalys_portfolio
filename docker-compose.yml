@@ -1,0 +1,19 @@
+# Node n'est pas nécessaire sur la machine : tout passe par Docker.
+#   docker compose up dev                 -> serveur de dev sur http://localhost:4321
+#   docker compose run --rm build         -> vérification des types + build dans ./dist
+services:
+  dev:
+    image: node:22-alpine
+    working_dir: /app
+    volumes:
+      - .:/app
+    ports:
+      - "4321:4321"
+    command: sh -c "npm install --no-audit --no-fund && npm run dev"
+
+  build:
+    image: node:22-alpine
+    working_dir: /app
+    volumes:
+      - .:/app
+    command: sh -c "npm install --no-audit --no-fund && npm run build"

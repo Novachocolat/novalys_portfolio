@@ -1,0 +1,31 @@
+---
+import { languages, type Lang } from "@/i18n/content";
+import Layout from "@/layouts/Layout.astro";
+import Nav from "@/components/Nav.astro";
+import Home from "@/components/Home.astro";
+import About from "@/components/About.astro";
+import Projects from "@/components/Projects.astro";
+import Experience from "@/components/Experience.astro";
+import Skills from "@/components/Skills.astro";
+import Contact from "@/components/Contact.astro";
+import Footer from "@/components/Footer.astro";
+
+export function getStaticPaths() {
+  return languages.map((lang) => ({ params: { lang } }));
+}
+
+const lang = Astro.params.lang as Lang;
+---
+
+<Layout lang={lang}>
+  <Nav lang={lang} />
+  <main>
+    <Home lang={lang} />
+    <About lang={lang} />
+    <Projects lang={lang} />
+    <Experience lang={lang} />
+    <Skills lang={lang} />
+    <Contact lang={lang} />
+  </main>
+  <Footer lang={lang} />
+</Layout>

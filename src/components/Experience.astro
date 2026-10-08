@@ -1,0 +1,60 @@
+---
+import { content, type Lang } from "@/i18n/content";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = content[lang].experience;
+---
+
+<section id="experience" class="py-12 border-t border-[var(--line)] text-[var(--white)]">
+  <div class="max-w-5xl mx-auto">
+    <h2 class="text-lg mb-2 shiny-sec">{t.eyebrow}</h2>
+    <h3 class="text-4xl md:text-5xl font-medium mb-8">{t.title}</h3>
+
+    <div class="rounded-2xl border border-[var(--white-icon-tr)] bg-[var(--card)] p-6 md:p-8">
+      <div class="flex flex-col md:flex-row md:justify-between gap-1">
+        <div>
+          <h4 class="text-2xl font-semibold">{t.company}</h4>
+          <p class="text-[var(--white-icon)]">{t.field}</p>
+        </div>
+        <div class="md:text-right text-sm text-[var(--white-icon)]">
+          <p>{t.period}</p>
+          <p>{t.place}</p>
+        </div>
+      </div>
+
+      <ol class="mt-6 space-y-6 border-l border-[var(--white-icon-tr)] pl-6">
+        {
+          t.roles.map((role) => (
+            <li class="relative">
+              <span class="absolute -left-[31px] top-2 size-2.5 rounded-full bg-[var(--sec)]" />
+              <div class="flex flex-col sm:flex-row sm:justify-between gap-1">
+                <h5 class="text-lg font-medium">{role.title}</h5>
+                <span class="text-sm text-[var(--white-icon)]">{role.period}</span>
+              </div>
+              <ul class="mt-2 space-y-1 text-[var(--white-icon)] list-disc pl-5">
+                {role.bullets.map((b) => <li>{b}</li>)}
+              </ul>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+
+    <div class="mt-6 rounded-2xl border border-[var(--white-icon-tr)] bg-[var(--card)] p-6 md:p-8">
+      <p class="text-sm text-[var(--sec)] mb-2">{t.education.label}</p>
+      <div class="flex flex-col md:flex-row md:justify-between gap-1">
+        <div>
+          <h4 class="text-xl font-semibold">{t.education.school}</h4>
+          <p class="text-[var(--white-icon)]">{t.education.degree}</p>
+        </div>
+        <div class="md:text-right text-sm text-[var(--white-icon)]">
+          <p>{t.education.period}</p>
+          <p>{t.education.place}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

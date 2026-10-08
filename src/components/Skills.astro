@@ -1,0 +1,34 @@
+---
+import { content, type Lang } from "@/i18n/content";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = content[lang].skills;
+---
+
+<section id="skills" class="py-12 border-t border-[var(--line)] text-[var(--white)]">
+  <div class="max-w-5xl mx-auto">
+    <h2 class="text-lg mb-2 shiny-sec">{t.eyebrow}</h2>
+    <h3 class="text-4xl md:text-5xl font-medium mb-8">{t.title}</h3>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {
+        t.groups.map((group) => (
+          <div class="rounded-2xl border border-[var(--white-icon-tr)] bg-[var(--card)] p-6">
+            <h4 class="text-lg font-semibold mb-4">{group.name}</h4>
+            <ul class="flex flex-wrap gap-2">
+              {group.items.map((item) => <li class="chip !text-[var(--white)]">{item}</li>)}
+            </ul>
+          </div>
+        ))
+      }
+    </div>
+
+    <p class="mt-6 text-[var(--white-icon)] flex flex-wrap items-center gap-2">
+      <span>{t.learning} :</span>
+      {t.learningItems.map((item) => <span class="chip !border-[var(--sec)]">{item}</span>)}
+    </p>
+  </div>
+</section>

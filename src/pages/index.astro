@@ -1,0 +1,31 @@
+---
+// Racine : redirige vers /fr/ ou /en/ selon la langue mémorisée, sinon celle du navigateur.
+import { defaultLang, site, withBase } from "@/i18n/content";
+
+const fallback = withBase(`/${defaultLang}/`);
+---
+
+<!doctype html>
+<html lang={defaultLang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{site.alias}</title>
+    <meta name="robots" content="noindex" />
+    <link rel="canonical" href={new URL(fallback, site.url).href} />
+    <meta http-equiv="refresh" content={`1; url=${fallback}`} />
+    <script is:inline define:vars={{ base: withBase("/"), fallback }}>
+      var lang = null;
+      try {
+        lang = localStorage.getItem("lang");
+      } catch (e) {}
+      if (lang !== "fr" && lang !== "en") {
+        lang = (navigator.language || "fr").toLowerCase().indexOf("fr") === 0 ? "fr" : "en";
+      }
+      location.replace(base + lang + "/");
+    </script>
+  </head>
+  <body>
+    <a href={fallback}>{site.alias}</a>
+  </body>
+</html>

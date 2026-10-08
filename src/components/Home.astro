@@ -1,0 +1,53 @@
+---
+import { content, site, type Lang } from "@/i18n/content";
+import { icons } from "@/i18n/icons";
+import LogoWall from "./LogoWall.astro";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = content[lang].hero;
+
+const links = [
+  { href: site.github, label: "GitHub", icon: icons.github("size-8") },
+  { href: site.linkedin, label: "LinkedIn", icon: icons.linkedin("size-8") },
+  { href: `mailto:${site.email}`, label: "Email", icon: icons.mail("size-8") },
+];
+---
+
+<section class="text-[var(--white)] mt-12 md:mt-0" id="home">
+  <div class="max-w-5xl mx-auto space-y-8 md:py-36 pb-14 pt-16">
+    <div class="text-left space-y-4">
+      <p class="text-md md:text-lg text-[var(--white-icon)]">{t.greeting}</p>
+      <div class="flex flex-col lg:flex-row lg:items-center space-y-4 lg:space-y-0 lg:space-x-8 md:gap-4">
+        <h1 class="text-5xl md:text-6xl font-medium text-pretty leading-none">
+          {t.title[0]} <br /> {t.title[1]}
+        </h1>
+        <p class="text-md md:text-2xl text-[var(--white-icon)]">{t.tagline}</p>
+      </div>
+
+      <p class="inline-flex items-center gap-2 chip !text-sm !py-2 mt-2">
+        <span class="size-2 rounded-full bg-[var(--accent-ok)]"></span>
+        {t.available}
+      </p>
+
+      <div class="flex justify-start gap-2 pt-3 md:pt-6">
+        {
+          links.map((link) => (
+            <a
+              href={link.href}
+              target={link.href.startsWith("http") ? "_blank" : undefined}
+              rel="noopener noreferrer"
+              aria-label={link.label}
+              class="icon-btn p-3"
+              set:html={link.icon}
+            />
+          ))
+        }
+      </div>
+    </div>
+
+    <LogoWall />
+  </div>
+</section>

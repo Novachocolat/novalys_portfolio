@@ -1,0 +1,182 @@
+---
+import { content, withBase, type Lang } from "@/i18n/content";
+import { icons } from "@/i18n/icons";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = content[lang];
+const other: Lang = lang === "fr" ? "en" : "fr";
+
+const navItems = [
+  { label: t.nav.home, href: "#home", icon: icons.home("size-6") },
+  { label: t.nav.about, href: "#about", icon: icons.user("size-6") },
+  { label: t.nav.projects, href: "#projects", icon: icons.folder("size-6") },
+  { label: t.nav.experience, href: "#experience", icon: icons.briefcase("size-6") },
+  { label: t.nav.skills, href: "#skills", icon: icons.tools("size-6") },
+  { label: t.nav.contact, href: "#contact", icon: icons.send("size-6") },
+];
+---
+
+<div class="fixed top-3 right-3 z-[110] flex gap-2">
+  <a
+    href={withBase(`/${other}/`)}
+    hreflang={other}
+    lang={other}
+    data-lang={other}
+    aria-label={`${t.ui.language}: ${other.toUpperCase()}`}
+    class="icon-btn h-10 px-3 flex items-center text-xs font-semibold backdrop-blur-xl"
+  >
+    {other.toUpperCase()}
+  </a>
+  <button
+    id="theme-toggle"
+    type="button"
+    class="icon-btn size-10 flex items-center justify-center backdrop-blur-xl"
+    aria-label={t.ui.theme}
+    data-labels={JSON.stringify({
+      system: t.ui.themeSystem,
+      light: t.ui.themeLight,
+      dark: t.ui.themeDark,
+    })}
+  >
+    <span class="theme-icon theme-system" set:html={icons.monitor("size-5")} />
+    <span class="theme-icon theme-light" set:html={icons.sun("size-5")} />
+    <span class="theme-icon theme-dark" set:html={icons.moon("size-5")} />
+  </button>
+</div>
+
+<div class="flex justify-center w-full">
+  <nav
+    id="main-nav"
+    class="fixed left-1/2 -translate-x-1/2 z-[100] bg-[var(--background)] border border-transparent backdrop-blur-xl transition-all duration-500 ease-in-out md:top-6 md:bottom-auto bottom-0 w-[80%]"
+    aria-label="Navigation"
+  >
+    <div class="container mx-auto flex justify-center items-center p-3">
+      <ul class="flex w-full justify-between md:justify-center md:gap-10 gap-1">
+        {
+          navItems.map((item) => (
+            <li class="flex-1 md:flex-none">
+              <a
+                href={item.href}
+                class="flex flex-col items-center gap-1 text-[var(--white-icon)] transition-colors text-[10px] md:text-base relative"
+              >
+                <div class="absolute -left-5 top-1/2 -translate-y-1/2 w-2 h-2 rounded-full transition-all duration-300 scale-0 opacity-0 bg-[var(--accent-ok)] nav-indicator hidden md:block" />
+                <span class="md:hidden flex items-center justify-center w-6 h-6" set:html={item.icon} />
+                <span>{item.label}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </nav>
+</div>
+
+<style>
+  nav {
+    transition:
+      background-color 0.3s ease,
+      border-radius 0.3s ease,
+      border-color 0.3s ease;
+  }
+  nav.scrolling {
+    border-color: var(--line);
+    border-radius: 9999px;
+  }
+  nav a.active .nav-indicator {
+    transform: translateY(-50%) scale(1);
+    opacity: 1;
+  }
+  nav a.active {
+    color: var(--white) !important;
+  }
+  @media (max-width: 767px) {
+    nav {
+      width: 100% !important;
+      border-radius: 1rem 1rem 0 0;
+      border-color: var(--line);
+    }
+    nav.scrolling {
+      border-radius: 1rem 1rem 0 0;
+    }
+  }
+
+  /* N'affiche que l'icône correspondant au réglage de thème courant */
+  .theme-icon { display: none; }
+  :global(:root[data-pref="system"]) .theme-system,
+  :global(:root[data-pref="light"]) .theme-light,
+  :global(:root[data-pref="dark"]) .theme-dark { display: block; }
+</style>
+
+<script>
+  const nav = document.getElementById("main-nav");
+  const maxScroll = 1000;
+  let rafId: number | null = null;
+
+  function updateNav() {
+    if (window.scrollY > 0) {
+      nav?.classList.add("scrolling");
+      const progress = Math.min(window.scrollY / maxScroll, 1);
+      const ease = 1 - Math.pow(1 - progress, 4);
+      const minWidth = 528;
+      const maxWidth = window.innerWidth * 0.8;
+      if (window.innerWidth >= 768) {
+        nav?.style.setProperty("width", `${maxWidth - (maxWidth - minWidth) * ease}px`);
+      }
+    } else {
+      nav?.classList.remove("scrolling");
+      nav?.style.setProperty("width", "80%");
+    }
+    rafId = null;
+  }
+
+  window.addEventListener(
+    "scroll",
+    () => {
+      if (!rafId) rafId = requestAnimationFrame(updateNav);
+    },
+    { passive: true },
+  );
+
+  // Surbrillance du lien de la section visible
+  const sections = document.querySelectorAll("section[id]");
+  const navLinks = document.querySelectorAll("nav a[href^='#']");
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        navLinks.forEach((link) => link.classList.remove("active"));
+        document.querySelector(`nav a[href="#${entry.target.id}"]`)?.classList.add("active");
+      });
+    },
+    { threshold: 0.5 },
+  );
+  sections.forEach((section) => observer.observe(section));
+
+  // Thème : système -> clair -> sombre
+  const toggle = document.getElementById("theme-toggle");
+  const order = ["system", "light", "dark"];
+  const labels = JSON.parse(toggle?.dataset.labels ?? "{}");
+  const refreshLabel = () => {
+    const pref = document.documentElement.dataset.pref ?? "system";
+    toggle?.setAttribute("title", labels[pref] ?? pref);
+  };
+  refreshLabel();
+  toggle?.addEventListener("click", () => {
+    const current = document.documentElement.dataset.pref ?? "system";
+    const next = order[(order.indexOf(current) + 1) % order.length];
+    (window as unknown as { __setTheme: (t: string) => void }).__setTheme(next);
+    refreshLabel();
+  });
+
+  // Mémorise la langue choisie pour la redirection de la racine
+  document.querySelectorAll<HTMLAnchorElement>("a[data-lang]").forEach((a) =>
+    a.addEventListener("click", () => {
+      try {
+        localStorage.setItem("lang", a.dataset.lang ?? "");
+      } catch {}
+    }),
+  );
+</script>

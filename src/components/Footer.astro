@@ -1,0 +1,41 @@
+---
+import { content, site, type Lang } from "@/i18n/content";
+import { icons } from "@/i18n/icons";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = content[lang].footer;
+
+const links = [
+  { href: site.github, label: "GitHub", icon: icons.github("size-7") },
+  { href: site.linkedin, label: "LinkedIn", icon: icons.linkedin("size-7") },
+  { href: `mailto:${site.email}`, label: "Email", icon: icons.mail("size-7") },
+  { href: site.website, label: "miyabicorp.fr", icon: icons.globe("size-7") },
+];
+---
+
+<footer class="w-full py-12 border-t border-[var(--line)]">
+  <div class="max-w-5xl mx-auto flex flex-col items-center gap-6">
+    <div class="flex gap-6">
+      {
+        links.map((link) => (
+          <a
+            href={link.href}
+            target={link.href.startsWith("http") ? "_blank" : undefined}
+            rel="noopener noreferrer"
+            aria-label={link.label}
+            class="text-[var(--white-icon)] hover:text-[var(--white)] transition duration-300"
+            set:html={link.icon}
+          />
+        ))
+      }
+    </div>
+    <p class="text-center text-sm text-[var(--white-icon)] space-y-1">
+      <!-- Licence MIT du thème : la mention de copyright doit être conservée (voir LICENSE-THEME) -->
+      <span class="block">Copyright © {new Date().getFullYear()} {site.name} ({site.alias}). {t.rights}</span>
+      <span class="block">{t.credit} · © 2025 Oscar Hernandez</span>
+    </p>
+  </div>
+</footer>

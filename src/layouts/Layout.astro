@@ -1,0 +1,186 @@
+---
+import { content, site, withBase, type Lang } from "@/i18n/content";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const meta = content[lang].meta;
+const canonical = new URL(withBase(`/${lang}/`), site.url).href;
+const other: Lang = lang === "fr" ? "en" : "fr";
+const otherUrl = new URL(withBase(`/${other}/`), site.url).href;
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: site.name,
+  alternateName: site.alias,
+  url: canonical,
+  sameAs: [site.github, site.linkedin, site.website],
+  jobTitle: lang === "fr" ? "Développeur Full-Stack Junior" : "Junior Full-Stack Developer",
+  description: meta.description,
+};
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="UTF-8" />
+    <title>{meta.title}</title>
+    <meta name="description" content={meta.description} />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href={withBase("/favicon.png")} />
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang={lang} href={canonical} />
+    <link rel="alternate" hreflang={other} href={otherUrl} />
+    <link
+      rel="preload"
+      href={withBase("/fonts/montserrat-latin-wght-normal.woff2")}
+      as="font"
+      type="font/woff2"
+      crossorigin="anonymous"
+    />
+
+    <meta property="og:title" content={meta.title} />
+    <meta property="og:description" content={meta.description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={`${site.alias} Portfolio`} />
+    <meta property="og:locale" content={lang === "fr" ? "fr_FR" : "en_US"} />
+
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
+    <!-- Thème : "system" (défaut), "light" ou "dark". Exécuté avant le rendu pour éviter le flash. -->
+    <script is:inline>
+      (function () {
+        var pref = "system";
+        try {
+          pref = localStorage.getItem("theme") || "system";
+        } catch (e) {}
+        var root = document.documentElement;
+        var mq = window.matchMedia("(prefers-color-scheme: light)");
+        var apply = function () {
+          root.dataset.pref = pref;
+          root.dataset.theme = pref === "system" ? (mq.matches ? "light" : "dark") : pref;
+        };
+        apply();
+        mq.addEventListener("change", apply);
+        window.__setTheme = function (next) {
+          pref = next;
+          try {
+            localStorage.setItem("theme", next);
+          } catch (e) {}
+          apply();
+        };
+      })();
+    </script>
+  </head>
+  <body class="bg-[var(--background)] sm:px-28 lg:px-20 px-9">
+    <slot />
+  </body>
+</html>
+
+<style is:global>
+  @font-face {
+    font-family: "Montserrat Variable";
+    src: url("/fonts/montserrat-latin-wght-normal.woff2") format("woff2-variations");
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  :root {
+    color-scheme: dark;
+    --background: #101010;
+    --sec: #a476ff;
+    --sec-light: #eee5ff;
+    --white: #dfdfdf;
+    --white-icon: #f3f3f398;
+    --white-icon-tr: #f3f3f310;
+    --card: #1414149c;
+    --line: #ffffff10;
+    --accent-ok: #a9ff5b;
+  }
+
+  :root[data-theme="light"] {
+    color-scheme: light;
+    --background: #f7f6fa;
+    --sec: #6d3fd6;
+    --sec-light: #b79cf5;
+    --white: #1b1b20;
+    --white-icon: #1b1b20a6;
+    --white-icon-tr: #1b1b2012;
+    --card: #ffffffb3;
+    --line: #00000014;
+    --accent-ok: #2f9e44;
+  }
+
+  * {
+    font-family: "Montserrat Variable", -apple-system, system-ui, sans-serif;
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    transition: background-color 0.3s ease;
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--white);
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  *::selection {
+    background-color: var(--sec);
+    color: var(--background);
+  }
+
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--white-icon-tr) transparent;
+  }
+
+  .shiny-sec {
+    background: linear-gradient(135deg, var(--sec) 25%, var(--sec-light) 50%, var(--sec) 75%);
+    background-size: 400% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: shine 3s linear infinite;
+  }
+
+  @keyframes shine {
+    0% { background-position: 100% 50%; }
+    30%, 70% { background-position: 0% 50%; }
+  }
+
+  .icon-btn {
+    color: var(--white-icon);
+    border: 1px solid var(--white-icon-tr);
+    background: var(--card);
+    border-radius: 0.75rem;
+    transition: color 0.3s ease, background-color 0.3s ease;
+  }
+  .icon-btn:hover {
+    color: var(--white);
+    background: var(--white-icon-tr);
+  }
+
+  .chip {
+    border: 1px solid var(--white-icon-tr);
+    background: var(--card);
+    color: var(--white-icon);
+    border-radius: 9999px;
+    padding: 0.2rem 0.75rem;
+    font-size: 0.8rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .shiny-sec { animation: none; background: none; color: var(--sec); }
+  }
+</style>

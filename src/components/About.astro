@@ -1,0 +1,32 @@
+---
+import { content, type Lang } from "@/i18n/content";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = content[lang].about;
+---
+
+<section id="about" class="py-12 border-t border-[var(--line)] text-[var(--white)]">
+  <div class="max-w-5xl mx-auto">
+    <h2 class="text-lg mb-2 shiny-sec">{t.eyebrow}</h2>
+    <h3 class="text-4xl md:text-5xl font-medium mb-8">{t.title}</h3>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+      <div class="space-y-4 text-[var(--white-icon)] md:text-lg leading-relaxed">
+        {t.paragraphs.map((p) => <p>{p}</p>)}
+      </div>
+      <dl class="grid grid-cols-1 sm:grid-cols-2 gap-4 content-start">
+        {
+          t.facts.map((fact) => (
+            <div class="rounded-2xl border border-[var(--white-icon-tr)] bg-[var(--card)] p-5">
+              <dt class="text-sm text-[var(--sec)] mb-1">{fact.label}</dt>
+              <dd class="text-[var(--white)]">{fact.value}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+  </div>
+</section>
