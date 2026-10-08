@@ -2,11 +2,10 @@
 import { defineConfig } from "astro/config";
 import tailwind from "@astrojs/tailwind";
 
-// Déploiement GitHub Pages :
-// - dépôt nommé "Novachocolat.github.io" => site à la racine, pas de `base`
-// - autre nom de dépôt (ex. "portfolio") => ajouter base: "/portfolio"
+// Déploiement GitHub Pages : dépôt "novalys_portfolio" => https://novachocolat.github.io/novalys_portfolio/
 export default defineConfig({
   site: "https://novachocolat.github.io",
+  base: "/novalys_portfolio",
   integrations: [tailwind()],
   vite: {
     resolve: {

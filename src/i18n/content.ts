@@ -11,7 +11,6 @@ export const site = {
   email: "lysandre.pb@gmail.com",
   github: "https://github.com/Novachocolat",
   linkedin: "https://www.linkedin.com/in/lysandrepb",
-  website: "https://miyabicorp.fr",
   // Créer un formulaire sur https://formspree.io puis coller son identifiant ici (ex. "xyzabcde").
   // Tant qu'il est vide, la section contact affiche un bouton e-mail à la place du formulaire.
   formspreeId: "",
@@ -124,7 +123,7 @@ export const content: Record<Lang, Content> = {
         },
         {
           title: "Market Tracer",
-          status: "Projet de BUT",
+          status: "SAÉ (BUT)",
           description:
             "Application de bureau pour gérer l'inventaire d'un supermarché et calculer le parcours de courses optimal avec l'algorithme A*.",
           tags: ["Python", "PyQt6", "A*"],
@@ -132,7 +131,7 @@ export const content: Record<Lang, Content> = {
         },
         {
           title: "Portail étudiant IUT",
-          status: "Projet de BUT",
+          status: "SAÉ (BUT)",
           description:
             "Portail web pour les étudiants de l'IUT : emplois du temps, outils, règlements, recherche et thème clair/sombre.",
           tags: ["HTML", "CSS", "JavaScript"],
@@ -248,7 +247,7 @@ export const content: Record<Lang, Content> = {
         },
         {
           title: "Market Tracer",
-          status: "University project",
+          status: "SAÉ (university project)",
           description:
             "Desktop app to manage a supermarket's inventory and compute the optimal shopping route with the A* algorithm.",
           tags: ["Python", "PyQt6", "A*"],
@@ -256,7 +255,7 @@ export const content: Record<Lang, Content> = {
         },
         {
           title: "IUT student portal",
-          status: "University project",
+          status: "SAÉ (university project)",
           description:
             "Web portal for IUT students: timetables, tools, regulations, search and a light/dark theme.",
           tags: ["HTML", "CSS", "JavaScript"],

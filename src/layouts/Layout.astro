@@ -1,5 +1,6 @@
 ---
 import { content, site, withBase, type Lang } from "@/i18n/content";
+import fontUrl from "@/assets/fonts/montserrat-latin-wght-normal.woff2?url";
 
 interface Props {
   lang: Lang;
@@ -17,7 +18,7 @@ const jsonLd = {
   name: site.name,
   alternateName: site.alias,
   url: canonical,
-  sameAs: [site.github, site.linkedin, site.website],
+  sameAs: [site.github, site.linkedin],
   jobTitle: lang === "fr" ? "Développeur Full-Stack Junior" : "Junior Full-Stack Developer",
   description: meta.description,
 };
@@ -36,7 +37,7 @@ const jsonLd = {
     <link rel="alternate" hreflang={other} href={otherUrl} />
     <link
       rel="preload"
-      href={withBase("/fonts/montserrat-latin-wght-normal.woff2")}
+      href={fontUrl}
       as="font"
       type="font/woff2"
       crossorigin="anonymous"
@@ -84,7 +85,7 @@ const jsonLd = {
 <style is:global>
   @font-face {
     font-family: "Montserrat Variable";
-    src: url("/fonts/montserrat-latin-wght-normal.woff2") format("woff2-variations");
+    src: url("../assets/fonts/montserrat-latin-wght-normal.woff2") format("woff2-variations");
     font-weight: 100 900;
     font-style: normal;
     font-display: swap;
