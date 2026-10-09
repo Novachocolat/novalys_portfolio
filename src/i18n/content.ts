@@ -150,12 +150,21 @@ export const content: Record<Lang, Content> = {
         {
           title: "Développeur junior (CDD)",
           period: "Juin 2026 – Juillet 2026",
-          bullets: ["Développement et maintenance de fonctionnalités au sein d'une équipe de développement logiciel."],
+          bullets: [
+            "Poursuite du travail à l'issue du stage, au sein de l'équipe de développement, sur une application CRM Web.",
+            "Développement et maintenance de fonctionnalités en C# / ASP.NET et JavaScript.",
+          ],
         },
         {
           title: "Stagiaire développeur",
           period: "Avril 2026 – Juin 2026",
-          bullets: ["Mission de recherche et développement (R&D).", "Développement de fonctionnalités avec ASP.NET."],
+          bullets: [
+            "Refonte du menu d'une application CRM Web au sein de l'équipe R&D : passage d'un menu fixe à un menu latéral dynamique à trois niveaux (menu, onglet, sous-onglet).",
+            "Comparaison de bibliothèques d'interface (DevExtreme, Tabler) avec deux preuves de concept, puis choix argumenté de DevExtreme.",
+            "Développement du fil d'Ariane, de la recherche dans le menu, des raccourcis épinglés et de la mémorisation de l'état du menu.",
+            "Méthode agile : tickets Jira, revues de code par Pull Requests et cérémonies Scrum.",
+            "Technologies : C#, ASP.NET, SQL Server, JavaScript, HTML, CSS/SCSS, DevExtreme, Git, Azure DevOps.",
+          ],
         },
       ],
       education: {
@@ -274,12 +283,21 @@ export const content: Record<Lang, Content> = {
         {
           title: "Junior developer (fixed-term contract)",
           period: "June 2026 – July 2026",
-          bullets: ["Development and maintenance of features within a software development team."],
+          bullets: [
+            "Continued working after the internship, within the development team, on a web CRM application.",
+            "Development and maintenance of features in C# / ASP.NET and JavaScript.",
+          ],
         },
         {
           title: "Developer intern",
           period: "April 2026 – June 2026",
-          bullets: ["Research and development (R&D) assignment.", "Feature development with ASP.NET."],
+          bullets: [
+            "Redesigned the menu of a web CRM application within the R&D team: from a fixed menu to a dynamic three-level side menu (menu, tab, sub-tab).",
+            "Compared UI libraries (DevExtreme, Tabler) through two proofs of concept, then made a reasoned choice of DevExtreme.",
+            "Built the breadcrumb, menu search, pinned shortcuts and persistence of the menu state.",
+            "Agile workflow: Jira tickets, code reviews through Pull Requests and Scrum ceremonies.",
+            "Technologies: C#, ASP.NET, SQL Server, JavaScript, HTML, CSS/SCSS, DevExtreme, Git, Azure DevOps.",
+          ],
         },
       ],
       education: {

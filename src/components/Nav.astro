@@ -120,8 +120,13 @@ const navItems = [
       nav?.classList.add("scrolling");
       const progress = Math.min(window.scrollY / maxScroll, 1);
       const ease = 1 - Math.pow(1 - progress, 4);
-      const minWidth = 528;
-      const maxWidth = window.innerWidth * 0.8;
+      // Largeur minimale = largeur réelle des liens (+ gaps et marges), pour ne jamais déborder du pill
+      const items = nav?.querySelectorAll<HTMLElement>("li") ?? [];
+      const list = nav?.querySelector("ul");
+      const gap = list ? parseFloat(getComputedStyle(list).columnGap) || 0 : 0;
+      const content = Array.from(items).reduce((sum, li) => sum + li.offsetWidth, 0) + gap * Math.max(items.length - 1, 0);
+      const minWidth = Math.min(content + 64, window.innerWidth - 16);
+      const maxWidth = Math.max(window.innerWidth * 0.8, minWidth);
       if (window.innerWidth >= 768) {
         nav?.style.setProperty("width", `${maxWidth - (maxWidth - minWidth) * ease}px`);
       }
